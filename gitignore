@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+data/lea_scan.db
+data/originals/*
+!data/originals/.gitkeep

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Factura - LEA Scan</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="container">
+    <a href="/">← Volver</a>
+
+    <h1>Factura</h1>
+    <p>{{ invoice.original_filename }}</p>
+
+    <section class="card">
+      <h2>Datos</h2>
+      <p><strong>Proveedor:</strong> {{ invoice.supplier or "-" }}</p>
+      <p><strong>CUIT/NIF:</strong> {{ invoice.supplier_tax_id or "-" }}</p>
+      <p><strong>Número:</strong> {{ invoice.invoice_number or "-" }}</p>
+      <p><strong>Fecha:</strong> {{ invoice.invoice_date or "-" }}</p>
+      <p><strong>Neto:</strong> {{ invoice.net_amount }} {{ invoice.currency }}</p>
+      <p><strong>IVA:</strong> {{ invoice.tax_amount }} {{ invoice.currency }}</p>
+      <p><strong>Total:</strong> {{ invoice.total_amount }} {{ invoice.currency }}</p>
+
+      <a href="/original/{{ invoice.id }}">Descargar original</a>
+    </section>
+
+    <section class="card">
+      <h2>Productos / artículos</h2>
+
+      {% if items %}
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>IVA</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.item_code }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit_price }}</td>
+            <td>{{ item.tax_rate }}</td>
+            <td>{{ item.subtotal }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No hay artículos cargados.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

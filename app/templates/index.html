@@ -1,1 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LEA Scan</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>LEA Scan</h1>
+    <p>Escaneo inteligente de facturas.</p>
 
+    <section class="card">
+      <h2>Cargar facturas</h2>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <label>Nombre del lote</label>
+        <input type="text" name="batch_name" placeholder="Ej: Agosto 2026">
+
+        <label>PDF o imágenes</label>
+        <input type="file" name="files" multiple required accept=".pdf,image/*">
+
+        <button type="submit">Subir facturas</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Facturas cargadas</h2>
+
+      {% if invoices %}
+      <table>
+        <thead>
+          <tr>
+            <th>Archivo</th>
+            <th>Proveedor</th>
+            <th>Factura</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for invoice in invoices %}
+          <tr>
+            <td>{{ invoice.original_filename }}</td>
+            <td>{{ invoice.supplier or "-" }}</td>
+            <td>{{ invoice.invoice_number or "-" }}</td>
+            <td>{{ invoice.total_amount }} {{ invoice.currency }}</td>
+            <td><a href="/invoice/{{ invoice.id }}">Abrir</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No hay facturas cargadas todavía.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
